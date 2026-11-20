@@ -1,8 +1,29 @@
 import type { MDXComponents } from "mdx/types";
 import Link from "next/link";
-import type { ComponentPropsWithoutRef } from "react";
+import {
+  isValidElement,
+  type ComponentPropsWithoutRef,
+  type ReactElement,
+} from "react";
+import { Mermaid } from "@/components/Mermaid";
+
+function extractMermaidChart(children: React.ReactNode): string | null {
+  if (!isValidElement(children)) return null;
+  const element = children as ReactElement<{
+    className?: string;
+    children?: React.ReactNode;
+  }>;
+  const className = element.props.className ?? "";
+  if (!className.includes("language-mermaid")) return null;
+
+  const content = element.props.children;
+  if (typeof content === "string") return content;
+  if (Array.isArray(content)) return content.join("");
+  return null;
+}
 
 const components: MDXComponents = {
+  Mermaid,
   h1: ({ children, ...props }) => (
     <h1
       className="font-sans text-3xl sm:text-4xl font-black tracking-tight text-[#bc8a01] leading-tight mb-3"
@@ -94,14 +115,21 @@ const components: MDXComponents = {
       {children}
     </code>
   ),
-  pre: ({ children, ...props }) => (
-    <pre
-      className="overflow-x-auto rounded-lg bg-[#1d2027] p-4 my-6 text-sm leading-6 text-white/95 [&_code]:bg-transparent [&_code]:p-0"
-      {...props}
-    >
-      {children}
-    </pre>
-  ),
+  pre: ({ children, ...props }) => {
+    const mermaidChart = extractMermaidChart(children);
+    if (mermaidChart !== null) {
+      return <Mermaid chart={mermaidChart} />;
+    }
+
+    return (
+      <pre
+        className="overflow-x-auto rounded-lg bg-[#1d2027] p-4 my-6 text-sm leading-6 text-white/95 [&_code]:bg-transparent [&_code]:p-0"
+        {...props}
+      >
+        {children}
+      </pre>
+    );
+  },
   hr: (props) => <hr className="my-8 border-white/15" {...props} />,
   strong: ({ children, ...props }) => (
     <strong className="font-semibold text-white" {...props}>

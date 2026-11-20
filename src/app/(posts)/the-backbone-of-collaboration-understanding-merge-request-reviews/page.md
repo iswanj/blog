@@ -7,7 +7,7 @@ export const metadata = {
 
 # The Backbone of Collaboration: Understanding Merge Request Reviews
 
-<p className="text-[13px] text-white/65 -mt-1 mb-8">November 18, 2026</p>
+<p className="text-[13px] text-white/65 -mt-1 mb-8">December 10, 2023</p>
 
 ## Introduction
 
@@ -20,6 +20,16 @@ Merge request reviews are essential for maintaining the quality of code in a col
 > To ensure a smooth merge process, writing a clear and informative description for your pull request (PR) is crucial. This description helps reviewers understand the context and purpose of your changes. Here's a sample PR description for your reference: \[[link to sample](https://gist.github.com/iswanj/1a84bd1ffee825d59bd15ea5d2d42dc6)\]
 
 ## How to Conduct Effective Merge Request Reviews
+
+```mermaid
+flowchart LR
+    A[Create MR] --> B[Context & Description]
+    B --> C[Automated CI Checks]
+    C --> D[Peer Code Review]
+    D --> E{Approved?}
+    E -- Yes --> F[Merge to Main]
+    E -- Needs Changes --> D
+```
 
 Effective merge request reviews require a clear understanding of the project's goals and the specific changes proposed. Here are a few steps to follow:
 

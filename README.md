@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Iswan Jumat — Personal Blog
+
+A minimalist personal blog built with **Next.js 16 (App Router)**, **MDX (`@next/mdx`)**, **Tailwind CSS v4**, and **Mermaid** diagram support.
+
+## Features
+
+- **File-based Markdown/MDX routes**: Each blog post lives as a `page.md` or `page.mdx` file under `src/app/(posts)/<slug>/` and is automatically listed on the home page sorted newest-first.
+- **Static centered header**: Persists across the home page and all post pages with the same reading column width (`max-w-2xl`).
+- **Custom dark theme & typography**: Charcoal slate background (`rgb(40, 44, 53)`), white text, warm amber accents (`#bc8a01`), **Montserrat** for headings/titles, and **Merriweather** for body text and dates.
+- **Mermaid diagrams**: Write standard ```` ```mermaid ```` fenced code blocks in any `.md` or `.mdx` post to render dark-themed SVG diagrams (free & open-source via `mermaid`).
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies and start the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | Description |
+| --- | --- |
+| `pnpm dev` | Start the Next.js development server |
+| `pnpm build` | Create an optimized production build |
+| `pnpm start` | Serve the production build |
+| `pnpm lint` | Run ESLint |
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```text
+├── public/
+│   └── profile.jpg                         # Header profile avatar
+└── src/
+    ├── mdx-components.tsx                  # Global MDX element styles & Mermaid hook
+    ├── lib/
+    │   ├── constants.ts                    # Configurable links (e.g., LINKEDIN_URL)
+    │   └── posts.ts                        # Scans src/app/(posts)/ for the home page list
+    ├── components/
+    │   ├── Header.tsx                      # Static site header ("Iswan Jumat" + avatar)
+    │   └── Mermaid.tsx                     # Client-side Mermaid diagram renderer
+    └── app/
+        ├── globals.css                     # Theme variables, fonts, and callout styles
+        ├── layout.tsx                      # Root layout & Google Fonts (Montserrat, Merriweather)
+        ├── page.tsx                        # Home page blog list
+        └── (posts)/
+            ├── layout.tsx                  # Shared article wrapper + "Back to all posts" link
+            └── <slug>/
+                └── page.md                 # Individual blog post (or page.mdx)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Adding a New Blog Post
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Create a folder under `src/app/(posts)/<your-slug>/`.
+2. Add a `page.md` (or `page.mdx`) file with an exported `metadata` object at the top:
 
-## Deploy on Vercel
+```mdx
+export const metadata = {
+  title: "Your Post Title",
+  date: "2026-11-21",
+  description: "A short summary displayed on the home page.",
+};
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Your Post Title
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<p className="text-[13px] text-white/65 -mt-1 mb-8">November 21, 2026</p>
+
+Write your blog content here in Markdown or MDX...
+```
+
+Your post will automatically appear on `/` sorted by `date` (newest first) and be served at `/<your-slug>`.
+
+## Rendering Mermaid Charts
+
+Inside any `.md` or `.mdx` post, add a standard fenced `mermaid` code block:
+
+````markdown
+```mermaid
+flowchart LR
+  A[Write Markdown] --> B[Next.js + MDX]
+  B --> C[Static Blog Page]
+```
+````
+
+Mermaid is loaded lazily in the browser only on pages that include a diagram.
+
+## Customization
+
+- **LinkedIn / Profile Link**: Update `LINKEDIN_URL` in `src/lib/constants.ts`.
+- **Profile Photo**: Replace `public/profile.jpg`.
+- **Favicon**: Replace `src/app/favicon.ico`.
+- **Colors & Fonts**: Edit `src/app/globals.css` and `src/app/layout.tsx`.
