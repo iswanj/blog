@@ -16,7 +16,7 @@ export function Footer() {
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="transition-colors hover:text-[#bc8a01]"
+                className="text-white/80 transition-colors hover:text-[#bc8a01]"
               >
                 {item.label}
               </a>
@@ -24,14 +24,14 @@ export function Footer() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="transition-colors hover:text-[#bc8a01]"
+                className="text-white/80 transition-colors hover:text-[#bc8a01]"
               >
                 {item.label}
               </Link>
             )
           )}
         </div>
-        <span className="hidden sm:inline text-white/35">
+        <span className="hidden sm:inline text-white/80">
           &copy; 2026 Iswan Jumat
         </span>
       </nav>
