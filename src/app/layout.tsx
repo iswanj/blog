@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Merriweather, Montserrat } from "next/font/google";
+import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import "./globals.css";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
-  weight: ["700", "800", "900"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
@@ -38,10 +39,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${montserrat.variable} ${merriweather.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-[rgb(40,44,53)] text-white flex flex-col">
-        <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col px-6 py-12">
+        <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col px-6 pt-12 pb-16">
           <Header />
           <main className="flex-1">{children}</main>
         </div>
+        <Footer />
       </body>
     </html>
   );

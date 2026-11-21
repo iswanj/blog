@@ -56,3 +56,40 @@
   font-size: 1.25rem;
   line-height: 1.5;
 }
+
+@media print {
+  html,
+  body {
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
+
+  header,
+  footer {
+    display: none !important;
+  }
+
+  body *,
+  .resume-page * {
+    color: #111111 !important;
+    border-color: #d4d4d4 !important;
+    text-decoration-color: #111111 !important;
+  }
+}
+
+.resume-page h2 {
+  color: #bc8a01;
+}
+
+.resume-page a {
+  color: #bc8a01;
+  text-decoration: underline;
+  text-decoration-color: rgba(188, 138, 1, 0.5);
+  text-underline-offset: 4px;
+  transition: color 150ms ease;
+}
+
+.resume-page a:hover {
+  color: #d9a212;
+  text-decoration-color: #d9a212;
+}
