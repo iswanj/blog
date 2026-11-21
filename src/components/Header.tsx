@@ -16,7 +16,7 @@ export function Header() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Iswan Jumat on LinkedIn"
-        className="shrink-0 transition-transform hover:scale-105"
+        className="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-white transition-transform hover:scale-105"
       >
         <Image
           src="/profile.jpg"
@@ -24,7 +24,7 @@ export function Header() {
           width={40}
           height={40}
           priority
-          className="h-10 w-10 rounded-full object-cover object-top"
+          className="h-full w-full -translate-y-0.5 scale-110 object-cover object-top"
         />
       </a>
     </header>
