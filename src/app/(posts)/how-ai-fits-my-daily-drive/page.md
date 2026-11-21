@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "How I Use AI in My Daily Drive (Without Losing the Plot)",
+  title: "How AI Fits My Daily Drive",
   date: "2026-10-21",
   description:
     "How I use AI alongside Jira stories, acceptance criteria, and code reviews to ship faster without losing engineering rigor.",
