@@ -64,11 +64,11 @@ export const blogConfig: BlogConfig = {
     linkedinLabel: "linkedin.com/in/your-handle",
   },
   theme: {
-    background: "rgb(40, 44, 53)",
-    foreground: "#ffffff",
-    accent: "#bc8a01",
-    accentHover: "#d9a212",
-    surface: "#1d2027",
+    background: "#0f172a",
+    foreground: "#f8fafc",
+    accent: "#38bdf8",
+    accentHover: "#7dd3fc",
+    surface: "#1e293b",
   },
   social: {
     linkedin: "https://linkedin.com/in/your-handle",
