@@ -42,7 +42,7 @@ const components: MDXComponents = {
   Mermaid: LazyMermaid,
   h1: ({ children, ...props }) => (
     <h1
-      className="font-sans text-3xl sm:text-4xl font-black tracking-tight text-[#bc8a01] leading-tight mb-3"
+      className="font-sans text-3xl sm:text-4xl font-black tracking-tight text-accent leading-tight mb-3"
       {...props}
     >
       {children}
@@ -72,7 +72,7 @@ const components: MDXComponents = {
   a: ({ href = "", children, ...props }: ComponentPropsWithoutRef<"a">) => {
     const isInternal = href.startsWith("/") || href.startsWith("#");
     const className =
-      "text-[#bc8a01] underline decoration-[#bc8a01]/50 underline-offset-4 transition-colors hover:text-[#d9a212] hover:decoration-[#d9a212]";
+      "text-accent underline decoration-accent/50 underline-offset-4 transition-colors hover:text-accent-hover hover:decoration-accent-hover";
 
     if (isInternal) {
       return (
@@ -117,7 +117,7 @@ const components: MDXComponents = {
   ),
   blockquote: ({ children, ...props }) => (
     <blockquote
-      className="border-l-4 border-[#bc8a01] pl-4 my-6 italic text-white/80"
+      className="border-l-4 border-accent pl-4 my-6 italic text-white/80"
       {...props}
     >
       {children}

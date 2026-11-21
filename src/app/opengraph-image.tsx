@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
-import { SITE_TITLE } from "@/lib/constants";
+import { blogConfig } from "@/blog.config";
 
-export const alt = SITE_TITLE;
+export const alt = blogConfig.site.title;
 export const size = {
   width: 1200,
   height: 630,
@@ -9,6 +9,8 @@ export const size = {
 export const contentType = "image/png";
 
 export default function OpenGraphImage() {
+  const domain = blogConfig.site.url.replace(/^https?:\/\//, "");
+
   return new ImageResponse(
     (
       <div
@@ -18,8 +20,8 @@ export default function OpenGraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          backgroundColor: "rgb(40, 44, 53)",
-          color: "#ffffff",
+          backgroundColor: blogConfig.theme.background,
+          color: blogConfig.theme.foreground,
           padding: "72px 84px",
           fontFamily: "sans-serif",
         }}
@@ -28,7 +30,7 @@ export default function OpenGraphImage() {
           style={{
             width: "96px",
             height: "6px",
-            backgroundColor: "#bc8a01",
+            backgroundColor: blogConfig.theme.accent,
             borderRadius: "3px",
           }}
         />
@@ -38,11 +40,11 @@ export default function OpenGraphImage() {
               fontSize: 72,
               fontWeight: 900,
               letterSpacing: "-0.03em",
-              color: "#bc8a01",
+              color: blogConfig.theme.accent,
               lineHeight: 1.1,
             }}
           >
-            {SITE_TITLE}
+            {blogConfig.site.title}
           </div>
           <div
             style={{
@@ -52,8 +54,7 @@ export default function OpenGraphImage() {
               maxWidth: "900px",
             }}
           >
-            Technology Lead · React Native, Web Architecture &amp; Engineering
-            Leadership
+            {blogConfig.site.tagline}
           </div>
         </div>
         <div
@@ -62,7 +63,7 @@ export default function OpenGraphImage() {
             color: "rgba(255, 255, 255, 0.55)",
           }}
         >
-          iswanjumat.com
+          {domain}
         </div>
       </div>
     ),

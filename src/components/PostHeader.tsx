@@ -16,7 +16,7 @@ export function PostHeader({ posts }: PostHeaderProps) {
 
   return (
     <header className="mb-8">
-      <h1 className="font-sans text-3xl sm:text-4xl font-black tracking-tight text-[#bc8a01] leading-tight mb-3">
+      <h1 className="font-sans text-3xl sm:text-4xl font-black tracking-tight text-accent leading-tight mb-3">
         {post.title}
       </h1>
       {(post.formattedDate || post.readingTime) && (

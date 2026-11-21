@@ -2,16 +2,10 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Geist_Mono, Merriweather, Montserrat } from "next/font/google";
+import type { CSSProperties } from "react";
+import { blogConfig } from "@/blog.config";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import {
-  GITHUB_URL,
-  INSTAGRAM_URL,
-  LINKEDIN_URL,
-  SITE_DESCRIPTION,
-  SITE_TITLE,
-  SITE_URL,
-} from "@/lib/constants";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -35,31 +29,31 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(blogConfig.site.url),
   title: {
-    default: SITE_TITLE,
-    template: `%s — ${SITE_TITLE}`,
+    default: blogConfig.site.title,
+    template: `%s — ${blogConfig.site.title}`,
   },
-  description: SITE_DESCRIPTION,
-  authors: [{ name: SITE_TITLE, url: SITE_URL }],
-  creator: SITE_TITLE,
+  description: blogConfig.site.description,
+  authors: [{ name: blogConfig.author.name, url: blogConfig.site.url }],
+  creator: blogConfig.author.name,
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: SITE_URL,
-    siteName: SITE_TITLE,
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
+    url: blogConfig.site.url,
+    siteName: blogConfig.site.title,
+    title: blogConfig.site.title,
+    description: blogConfig.site.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
+    title: blogConfig.site.title,
+    description: blogConfig.site.description,
   },
   alternates: {
     canonical: "/",
     types: {
-      "application/rss+xml": `${SITE_URL}/rss.xml`,
+      "application/rss+xml": `${blogConfig.site.url}/rss.xml`,
     },
   },
   robots: {
@@ -68,32 +62,47 @@ export const metadata: Metadata = {
   },
 };
 
+const sameAsLinks = [
+  blogConfig.social.linkedin,
+  blogConfig.social.github,
+  blogConfig.social.instagram,
+].filter((url): url is string => Boolean(url));
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "Person",
-      name: SITE_TITLE,
-      url: SITE_URL,
-      jobTitle: "Technology Lead",
-      sameAs: [LINKEDIN_URL, GITHUB_URL, INSTAGRAM_URL],
+      name: blogConfig.author.name,
+      url: blogConfig.site.url,
+      jobTitle: blogConfig.author.jobTitle,
+      sameAs: sameAsLinks,
     },
     {
       "@type": "WebSite",
-      name: SITE_TITLE,
-      url: SITE_URL,
-      description: SITE_DESCRIPTION,
+      name: blogConfig.site.title,
+      url: blogConfig.site.url,
+      description: blogConfig.site.description,
     },
   ],
 };
+
+const themeStyle = {
+  "--background": blogConfig.theme.background,
+  "--foreground": blogConfig.theme.foreground,
+  "--accent": blogConfig.theme.accent,
+  "--accent-hover": blogConfig.theme.accentHover,
+  "--surface": blogConfig.theme.surface,
+} as CSSProperties;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      style={themeStyle}
       className={`${montserrat.variable} ${merriweather.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-[rgb(40,44,53)] text-white flex flex-col">
+      <body className="min-h-full bg-background text-foreground flex flex-col">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

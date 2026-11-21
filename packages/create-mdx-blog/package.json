@@ -1,0 +1,31 @@
+{
+  "name": "create-mdx-blog",
+  "version": "0.1.0",
+  "description": "Scaffold a minimalist Next.js + MDX personal blog and resume website driven by a single config file.",
+  "type": "module",
+  "bin": {
+    "create-mdx-blog": "./bin/index.mjs"
+  },
+  "files": [
+    "bin",
+    "template",
+    "README.md"
+  ],
+  "scripts": {
+    "build:template": "node ./scripts/build-template.mjs",
+    "prepack": "node ./scripts/build-template.mjs"
+  },
+  "keywords": [
+    "nextjs",
+    "mdx",
+    "blog",
+    "portfolio",
+    "resume",
+    "tailwindcss",
+    "mermaid"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

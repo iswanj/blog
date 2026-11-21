@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { blogConfig } from "@/blog.config";
 import { formatPostDate, getAllPosts } from "@/lib/posts";
 
 export default async function HomePage() {
@@ -7,12 +8,12 @@ export default async function HomePage() {
   return (
     <div className="flex flex-col gap-10 pb-12">
       {posts.length === 0 ? (
-        <p className="text-white/75">No blog posts yet.</p>
+        <p className="text-white/75">{blogConfig.labels.emptyPosts}</p>
       ) : (
         posts.map((post) => (
           <article key={post.slug} className="group">
             <Link href={`/${post.slug}`} className="block">
-              <h2 className="font-sans text-[28px] font-black leading-tight tracking-tight text-[#bc8a01] transition-colors group-hover:text-[#d9a212]">
+              <h2 className="font-sans text-[28px] font-black leading-tight tracking-tight text-accent transition-colors group-hover:text-accent-hover">
                 {post.title}
               </h2>
               {(post.date || post.readingTime) && (

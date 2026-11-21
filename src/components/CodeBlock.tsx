@@ -29,13 +29,13 @@ export function CodeBlock({
         type="button"
         onClick={handleCopy}
         aria-label="Copy code to clipboard"
-        className="print:hidden absolute top-2.5 right-2.5 z-10 rounded border border-white/10 bg-black/40 px-2 py-1 font-sans text-[11px] font-medium text-white/70 backdrop-blur-sm transition-all hover:border-[#bc8a01]/60 hover:text-[#bc8a01]"
+        className="print:hidden absolute top-2.5 right-2.5 z-10 rounded border border-white/10 bg-black/40 px-2 py-1 font-sans text-[11px] font-medium text-white/70 backdrop-blur-sm transition-all hover:border-accent/60 hover:text-accent"
       >
         {copied ? "Copied!" : "Copy"}
       </button>
       <pre
         ref={preRef}
-        className={`overflow-x-auto rounded-lg border border-white/5 bg-[#1d2027] p-4 pr-16 text-sm leading-6 text-white/95 [&_code]:bg-transparent [&_code]:p-0 ${className}`}
+        className={`overflow-x-auto rounded-lg border border-white/5 bg-surface p-4 pr-16 text-sm leading-6 text-white/95 [&_code]:bg-transparent [&_code]:p-0 ${className}`}
         {...props}
       >
         {children}

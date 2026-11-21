@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
+import { blogConfig } from "@/blog.config";
 
 interface MermaidProps {
   chart: string;
@@ -28,16 +29,16 @@ export function Mermaid({ chart }: MermaidProps) {
             securityLevel: "strict",
             themeVariables: {
               darkMode: true,
-              background: "#1d2027",
-              primaryColor: "#282c35",
-              primaryTextColor: "#ffffff",
-              primaryBorderColor: "#bc8a01",
-              lineColor: "#bc8a01",
-              secondaryColor: "#1d2027",
-              tertiaryColor: "#323743",
-              noteBkgColor: "#282c35",
-              noteTextColor: "#ffffff",
-              noteBorderColor: "#bc8a01",
+              background: blogConfig.theme.surface,
+              primaryColor: blogConfig.theme.background,
+              primaryTextColor: blogConfig.theme.foreground,
+              primaryBorderColor: blogConfig.theme.accent,
+              lineColor: blogConfig.theme.accent,
+              secondaryColor: blogConfig.theme.surface,
+              tertiaryColor: blogConfig.theme.background,
+              noteBkgColor: blogConfig.theme.background,
+              noteTextColor: blogConfig.theme.foreground,
+              noteBorderColor: blogConfig.theme.accent,
               fontFamily: "var(--font-montserrat), sans-serif",
             },
           });
@@ -69,7 +70,6 @@ export function Mermaid({ chart }: MermaidProps) {
     };
   }, [chart, reactId]);
 
-  // Handle ESC key to exit fullscreen
   useEffect(() => {
     if (!isFullScreen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -83,7 +83,7 @@ export function Mermaid({ chart }: MermaidProps) {
 
   if (error) {
     return (
-      <div className="my-6 rounded-lg border border-red-400/40 bg-[#1d2027] p-4 font-mono text-sm text-red-300">
+      <div className="my-6 rounded-lg border border-red-400/40 bg-surface p-4 font-mono text-sm text-red-300">
         Mermaid diagram error: {error}
       </div>
     );
@@ -91,8 +91,7 @@ export function Mermaid({ chart }: MermaidProps) {
 
   return (
     <>
-      <div className="group relative my-6 rounded-lg bg-[#1d2027] p-4 border border-white/5 transition-colors hover:border-white/10">
-        {/* Fullscreen Trigger Button */}
+      <div className="group relative my-6 rounded-lg bg-surface p-4 border border-white/5 transition-colors hover:border-white/10">
         {svg && (
           <button
             type="button"
@@ -137,17 +136,15 @@ export function Mermaid({ chart }: MermaidProps) {
         </div>
       </div>
 
-      {/* Fullscreen Modal / Lightbox */}
       {isFullScreen && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 sm:p-8 backdrop-blur-md"
           onClick={() => setIsFullScreen(false)}
         >
           <div
-            className="relative flex flex-col max-h-[92vh] max-w-[96vw] w-full items-center justify-center rounded-xl border border-white/10 bg-[#1d2027] p-6 shadow-2xl"
+            className="relative flex flex-col max-h-[92vh] max-w-[96vw] w-full items-center justify-center rounded-xl border border-white/10 bg-surface p-6 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Modal Controls Header */}
             <div className="absolute top-4 right-4 flex items-center gap-3">
               <span className="hidden sm:inline-block font-sans text-xs text-white/40">
                 Press ESC or click outside to exit
@@ -175,7 +172,6 @@ export function Mermaid({ chart }: MermaidProps) {
               </button>
             </div>
 
-            {/* Expanded Chart View */}
             <div
               className="flex max-h-[82vh] w-full items-center justify-center overflow-auto p-4 [&_svg]:h-auto [&_svg]:max-h-[78vh] [&_svg]:w-full [&_svg]:max-w-5xl"
               dangerouslySetInnerHTML={{ __html: svg }}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { blogConfig } from "@/blog.config";
 import { PostHeader } from "@/components/PostHeader";
 import { getAllPosts } from "@/lib/posts";
 
@@ -16,9 +17,9 @@ export default async function PostLayout({
       <footer className="mt-14 border-t border-white/10 pt-6">
         <Link
           href="/"
-          className="text-sm font-medium text-[#bc8a01] transition-colors hover:text-[#d9a212]"
+          className="text-sm font-medium text-accent transition-colors hover:text-accent-hover"
         >
-          &larr; Back to all posts
+          {blogConfig.labels.backToPosts}
         </Link>
       </footer>
     </article>

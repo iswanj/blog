@@ -1,26 +1,26 @@
 import Image from "next/image";
 import Link from "next/link";
-import { LINKEDIN_URL } from "@/lib/constants";
+import { blogConfig } from "@/blog.config";
 
 export function Header() {
   return (
     <header className="mb-14 flex items-center justify-between">
       <Link
         href="/"
-        className="font-sans text-2xl font-black tracking-tight text-white transition-opacity hover:opacity-85"
+        className="font-sans text-2xl font-black tracking-tight text-foreground transition-opacity hover:opacity-85"
       >
-        Iswan Jumat
+        {blogConfig.site.name}
       </Link>
       <a
-        href={LINKEDIN_URL}
+        href={blogConfig.author.avatarLink}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Iswan Jumat on LinkedIn"
+        aria-label={`${blogConfig.author.name} profile`}
         className="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-white transition-transform hover:scale-105"
       >
         <Image
-          src="/profile.jpg"
-          alt="Iswan Jumat"
+          src={blogConfig.author.avatar}
+          alt={blogConfig.author.name}
           width={40}
           height={40}
           priority
