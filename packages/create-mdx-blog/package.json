@@ -1,6 +1,6 @@
 {
   "name": "create-mdx-blog",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Scaffold a minimalist Next.js + MDX personal blog and resume website driven by a single config file.",
   "type": "module",
   "bin": {
