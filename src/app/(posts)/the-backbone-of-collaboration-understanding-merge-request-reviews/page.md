@@ -5,10 +5,6 @@ export const metadata = {
     "Why merge request reviews matter, how to conduct them effectively, and best practices for engineering teams.",
 };
 
-# The Backbone of Collaboration: Understanding Merge Request Reviews
-
-<p className="text-[13px] text-white/65 -mt-1 mb-8">December 10, 2023</p>
-
 ## Introduction
 
 Merge request reviews form an integral part of successful collaborative projects, especially in the field of software development. They ensure high-quality code, facilitate knowledge sharing, and foster a more collaborative team environment. In this blog post, we will delve into the importance of merge request reviews, how to conduct them effectively, and some best practices to follow.

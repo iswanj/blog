@@ -5,25 +5,41 @@ import {
   type ComponentPropsWithoutRef,
   type ReactElement,
 } from "react";
-import { Mermaid } from "@/components/Mermaid";
+import { CodeBlock } from "@/components/CodeBlock";
+import { LazyMermaid } from "@/components/LazyMermaid";
+
+function extractPlainText(node: React.ReactNode): string {
+  if (typeof node === "string" || typeof node === "number") {
+    return String(node);
+  }
+  if (Array.isArray(node)) {
+    return node.map(extractPlainText).join("");
+  }
+  if (isValidElement(node)) {
+    const element = node as ReactElement<{ children?: React.ReactNode }>;
+    return extractPlainText(element.props.children);
+  }
+  return "";
+}
 
 function extractMermaidChart(children: React.ReactNode): string | null {
   if (!isValidElement(children)) return null;
   const element = children as ReactElement<{
     className?: string;
+    "data-language"?: string;
     children?: React.ReactNode;
   }>;
   const className = element.props.className ?? "";
-  if (!className.includes("language-mermaid")) return null;
+  const dataLang = element.props["data-language"] ?? "";
+  if (!className.includes("language-mermaid") && dataLang !== "mermaid") {
+    return null;
+  }
 
-  const content = element.props.children;
-  if (typeof content === "string") return content;
-  if (Array.isArray(content)) return content.join("");
-  return null;
+  return extractPlainText(element.props.children);
 }
 
 const components: MDXComponents = {
-  Mermaid,
+  Mermaid: LazyMermaid,
   h1: ({ children, ...props }) => (
     <h1
       className="font-sans text-3xl sm:text-4xl font-black tracking-tight text-[#bc8a01] leading-tight mb-3"
@@ -118,17 +134,10 @@ const components: MDXComponents = {
   pre: ({ children, ...props }) => {
     const mermaidChart = extractMermaidChart(children);
     if (mermaidChart !== null) {
-      return <Mermaid chart={mermaidChart} />;
+      return <LazyMermaid chart={mermaidChart} />;
     }
 
-    return (
-      <pre
-        className="overflow-x-auto rounded-lg bg-[#1d2027] p-4 my-6 text-sm leading-6 text-white/95 [&_code]:bg-transparent [&_code]:p-0"
-        {...props}
-      >
-        {children}
-      </pre>
-    );
+    return <CodeBlock {...props}>{children}</CodeBlock>;
   },
   hr: (props) => <hr className="my-8 border-white/15" {...props} />,
   strong: ({ children, ...props }) => (

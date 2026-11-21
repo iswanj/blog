@@ -5,10 +5,6 @@ export const metadata = {
     "Strategies for overcoming distance barriers and building strong, collaborative teams across time zones.",
 };
 
-# Remote Collaboration: Overcoming the Distance Barrier
-
-<p className="text-[13px] text-white/65 -mt-1 mb-8">May 26, 2024</p>
-
 Having witnessed the explosion of remote work firsthand since 2021, I've seen teams transform. They now collaborate seamlessly across continents and time zones. This flexibility unlocks a wider talent pool, but it also presents communication hurdles and challenges in fostering a strong team spirit. These challenges remain even in traditional on-site setups when multiple teams from different countries collaborate on the same project, such as a team in Malaysia working alongside a team in Indonesia.
 
 Let's dive into strategies for overcoming distance barriers and building strong, collaborative teams. These strategies are just as applicable to traditional on-site environments where multiple teams from different time zones collaborate on the same project, as they are to fully remote teams.

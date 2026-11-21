@@ -19,6 +19,15 @@ const withMDX = createMDX({
   extension: /\.(md|mdx)$/,
   options: {
     format: "mdx",
+    rehypePlugins: [
+      [
+        "rehype-pretty-code",
+        {
+          theme: "one-dark-pro",
+          keepBackground: false,
+        },
+      ],
+    ],
   },
 });
 

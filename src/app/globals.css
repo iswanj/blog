@@ -93,3 +93,12 @@
   color: #d9a212;
   text-decoration-color: #d9a212;
 }
+
+[data-rehype-pretty-code-figure] {
+  margin: 0;
+}
+
+[data-rehype-pretty-code-figure] [data-line] {
+  display: inline-block;
+  width: 100%;
+}

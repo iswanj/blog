@@ -15,13 +15,18 @@ export default async function HomePage() {
               <h2 className="font-sans text-[28px] font-black leading-tight tracking-tight text-[#bc8a01] transition-colors group-hover:text-[#d9a212]">
                 {post.title}
               </h2>
-              {post.date && (
-                <time
-                  dateTime={post.date}
-                  className="mt-1 block font-serif text-[13px] text-white/65"
-                >
-                  {formatPostDate(post.date)}
-                </time>
+              {(post.date || post.readingTime) && (
+                <div className="mt-1 flex items-center gap-2 font-serif text-[13px] text-white/65">
+                  {post.date && (
+                    <time dateTime={post.date}>
+                      {formatPostDate(post.date)}
+                    </time>
+                  )}
+                  {post.date && post.readingTime && (
+                    <span aria-hidden="true">&middot;</span>
+                  )}
+                  {post.readingTime && <span>{post.readingTime}</span>}
+                </div>
               )}
               {post.description && (
                 <p className="mt-2 font-serif text-base leading-relaxed text-white/90">

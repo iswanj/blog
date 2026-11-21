@@ -5,10 +5,29 @@ export interface PostSummary {
   slug: string;
   title: string;
   date: string;
+  formattedDate: string;
   description: string;
+  readingTime: string;
 }
 
 const POSTS_DIR = path.join(process.cwd(), "src", "app", "(posts)");
+const WORDS_PER_MINUTE = 200;
+
+function calculateReadingTime(source: string): string {
+  const withoutMetadata = source.replace(
+    /export\s+const\s+metadata\s*=\s*\{[\s\S]*?\};?/,
+    ""
+  );
+  const plainText = withoutMetadata
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/[#*_`>\[\]()!-]/g, " ")
+    .trim();
+
+  const words = plainText ? plainText.split(/\s+/).length : 0;
+  const minutes = Math.max(1, Math.ceil(words / WORDS_PER_MINUTE));
+  return `${minutes} min read`;
+}
 
 function extractMetadataField(block: string, field: string): string | null {
   const regex = new RegExp(
@@ -23,7 +42,7 @@ function extractMetadataField(block: string, field: string): string | null {
 function parsePostMetadata(
   source: string,
   slug: string
-): Omit<PostSummary, "slug"> {
+): Omit<PostSummary, "slug" | "formattedDate" | "readingTime"> {
   const metadataBlockMatch = source.match(
     /export\s+const\s+metadata\s*=\s*\{([\s\S]*?)\};?/
   );
@@ -86,9 +105,12 @@ export async function getAllPosts(): Promise<PostSummary[]> {
     if (!fileContent) continue;
 
     const meta = parsePostMetadata(fileContent, slug);
+    const readingTime = calculateReadingTime(fileContent);
     posts.push({
       slug,
       ...meta,
+      formattedDate: formatPostDate(meta.date),
+      readingTime,
     });
   }
 

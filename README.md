@@ -64,10 +64,6 @@ export const metadata = {
   description: "A short summary displayed on the home page.",
 };
 
-# Your Post Title
-
-<p className="text-[13px] text-white/65 -mt-1 mb-8">November 21, 2026</p>
-
 Write your blog content here in Markdown or MDX...
 ```
 
