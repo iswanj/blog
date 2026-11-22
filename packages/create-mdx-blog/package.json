@@ -13,7 +13,13 @@
   ],
   "scripts": {
     "build:template": "node ./scripts/build-template.mjs",
-    "prepack": "node ./scripts/build-template.mjs"
+    "prepack": "node ./scripts/build-template.mjs",
+    "version:bump": "node ./scripts/bump-version.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iswanj/mdx-blog.git",
+    "directory": "packages/create-mdx-blog"
   },
   "keywords": [
     "nextjs",

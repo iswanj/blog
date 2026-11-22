@@ -1,0 +1,117 @@
+name: Publish create-mdx-blog
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: SemVer increment type
+        type: choice
+        required: true
+        default: patch
+        options:
+          - patch
+          - minor
+          - major
+      dry_run:
+        description: Run build, version bump, and pack dry-run without publishing or tagging
+        type: boolean
+        required: false
+        default: false
+
+concurrency:
+  group: publish-create-mdx-blog
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  publish:
+    name: Build, Bump, Publish & Tag
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Build Next.js app
+        run: pnpm build
+
+      - name: Bump create-mdx-blog version
+        id: bump
+        run: node packages/create-mdx-blog/scripts/bump-version.mjs "${{ inputs.release_type }}"
+
+      - name: Verify create-mdx-blog template & tarball
+        run: pnpm cli:check
+
+      - name: Upgrade npm for OIDC Trusted Publishing
+        if: ${{ !inputs.dry_run }}
+        run: npm install -g npm@latest
+
+      - name: Publish to npm
+        if: ${{ !inputs.dry_run }}
+        working-directory: packages/create-mdx-blog
+        run: |
+          PROVENANCE_FLAG=""
+          if [ "${{ github.event.repository.private }}" = "false" ]; then
+            PROVENANCE_FLAG="--provenance"
+          fi
+
+          npm publish --access public $PROVENANCE_FLAG
+
+      - name: Commit version, push Git tag & create GitHub Release
+        if: ${{ !inputs.dry_run }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.bump.outputs.version }}
+          TAG: ${{ steps.bump.outputs.tag }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add packages/create-mdx-blog/package.json
+          git commit -m "chore(release): create-mdx-blog ${TAG} [skip ci]"
+          git tag -a "${TAG}" -m "Release create-mdx-blog ${TAG}"
+
+          git push origin "${TAG}"
+          git push origin "HEAD:${GITHUB_REF_NAME}" || echo "::warning::Could not push version commit directly to ${GITHUB_REF_NAME}; tag ${TAG} was pushed."
+
+          gh release create "${TAG}" --title "create-mdx-blog ${TAG}" --generate-notes
+
+      - name: Write Release Summary
+        if: always()
+        env:
+          PREV_VERSION: ${{ steps.bump.outputs.previous_version }}
+          VERSION: ${{ steps.bump.outputs.version }}
+          TAG: ${{ steps.bump.outputs.tag }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          {
+            echo "### create-mdx-blog Release Summary"
+            echo ""
+            echo "| Field | Value |"
+            echo "| :--- | :--- |"
+            echo "| Package | \`create-mdx-blog\` |"
+            echo "| Previous Version | \`${PREV_VERSION:-n/a}\` |"
+            echo "| New Version | \`${VERSION:-n/a}\` |"
+            echo "| Git Tag | \`${TAG:-n/a}\` |"
+            echo "| Dry Run | \`${DRY_RUN}\` |"
+          } >> "$GITHUB_STEP_SUMMARY"

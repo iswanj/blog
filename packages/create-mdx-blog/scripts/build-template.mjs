@@ -50,7 +50,20 @@ for (const file of rootFiles) {
 }
 copyFile(".gitignore", "_gitignore");
 
-// Clean up root-only scripts/exclusions inside the template's tsconfig & eslint
+// Clean up root-only scripts/exclusions inside the template's package.json & tsconfig
+const templatePkgPath = path.join(templateDir, "package.json");
+if (fs.existsSync(templatePkgPath)) {
+  const templatePkg = JSON.parse(fs.readFileSync(templatePkgPath, "utf8"));
+  if (templatePkg.scripts && "cli:check" in templatePkg.scripts) {
+    delete templatePkg.scripts["cli:check"];
+  }
+  fs.writeFileSync(
+    templatePkgPath,
+    `${JSON.stringify(templatePkg, null, 2)}\n`,
+    "utf8"
+  );
+}
+
 const templateTsconfigPath = path.join(templateDir, "tsconfig.json");
 if (fs.existsSync(templateTsconfigPath)) {
   const tsconfig = JSON.parse(fs.readFileSync(templateTsconfigPath, "utf8"));

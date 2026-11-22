@@ -156,16 +156,22 @@ Visit [http://localhost:3000](http://localhost:3000) to preview the site.
 | `pnpm build` | Build the production application and prerender static routes |
 | `pnpm start` | Start the production server |
 | `pnpm lint` | Run ESLint checks |
+| `pnpm cli:check` | Build the CLI starter template and dry-run `npm pack` |
 
 ### Project Structure
 
 ```text
+├── .github/workflows/
+│   ├── ci.yml                              # Runs lint, build & CLI pack check on every push
+│   └── publish-cli.yml                     # Manual trigger to bump, publish to npm & tag release
 ├── public/
 │   └── profile.jpg                         # Profile avatar image
 ├── packages/
 │   └── create-mdx-blog/                    # CLI scaffolder package (npx create-mdx-blog)
 │       ├── bin/index.mjs                   # CLI entry point
-│       ├── scripts/build-template.mjs      # Syncs app engine & overlays sample data
+│       ├── scripts/
+│       │   ├── build-template.mjs          # Syncs app engine & overlays sample data
+│       │   └── bump-version.mjs            # SemVer auto-bumping against package, npm & tags
 │       └── sample-overrides/               # Sample config, 1 sample post & sample resume
 └── src/
     ├── blog.config.ts                      # Central configuration (colors, text, links)
@@ -195,26 +201,42 @@ Visit [http://localhost:3000](http://localhost:3000) to preview the site.
             └── <slug>/page.md              # Individual blog posts
 ```
 
-### Building & Publishing the CLI Scaffolder
+### Automated GitHub Actions Release (Recommended)
 
-When you update components in the root app and want to publish a new version of `create-mdx-blog`:
+Every push to `main` and pull request automatically runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml) to validate linting, the Next.js production build, and the CLI template tarball without publishing to npm.
+
+#### One-Time npm Trusted Publisher Setup (OIDC — No Token Needed)
+
+Instead of storing an `NPM_TOKEN` secret, configure **Trusted Publishing (OIDC)** on your npm package settings page:
+
+1. Open your package on [npmjs.com](https://www.npmjs.com/package/create-mdx-blog) → **Settings** → **Trusted Publisher** → **GitHub Actions**:
+   - **Organization or user**: `iswanj`
+   - **Repository**: `mdx-blog`
+   - **Workflow filename**: `publish-cli.yml`
+   - **Environment name**: *(leave blank)*
+   - **Allowed actions**: Check **Allow npm publish**
+2. Under **Publishing access**, you can select **Require two-factor authentication and disallow bypass 2fa tokens (recommended)**—OIDC Trusted Publishers will continue to work without any static token.
+
+*(GitHub automatically provides `GITHUB_TOKEN` for creating release commits, Git tags, and GitHub Releases.)*
+
+#### Publishing a New Version
+
+1. Open **Actions** → **Publish create-mdx-blog** on GitHub.
+2. Click **Run workflow**.
+3. Choose the SemVer increment (`patch`, `minor`, or `major`) and optionally toggle `dry_run` to test without publishing.
+
+The workflow validates the app, auto-bumps `packages/create-mdx-blog/package.json`, publishes `create-mdx-blog` to npm, commits the version bump with `[skip ci]`, pushes tag `vX.Y.Z`, and creates a GitHub Release with auto-generated notes.
+
+### Publishing Locally (Manual Fallback)
+
+If you prefer to verify or release from your local machine:
 
 ```bash
+# Verify clean template generation and tarball contents
+pnpm cli:check
+
+# Or bump & publish directly
 cd packages/create-mdx-blog
-
-# Test generating the clean template locally
-npm run build:template
-
-# Publish to npm (automatically runs build:template via prepack)
-npm publish --access public
-```
-
-### Publishing Future Updates
-
-Whenever you improve components in your blog and want to release a new CLI version:
-
-```bash
-cd packages/create-mdx-blog
-npm version patch   # bumps 0.1.0 -> 0.1.1
+npm run version:bump -- patch
 npm publish --access public
 ```
