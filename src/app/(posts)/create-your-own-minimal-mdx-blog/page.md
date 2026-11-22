@@ -144,4 +144,4 @@ Vercel will detect Next.js automatically and build the static output. It include
 
 ---
 
-That’s all it takes. If you try it out and build your own blog with it, let me know or drop a star on the [GitHub repository](https://github.com/iswanjumat/create-mdx-blog)—I’d love to see what you build!
+That’s all it takes. If you try it out and build your own blog with it, let me know or drop a star on the [GitHub repository](https://github.com/iswanj/mdx-blog/tree/main/packages/create-mdx-blog)—I’d love to see what you build!
